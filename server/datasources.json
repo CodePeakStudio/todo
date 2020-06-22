@@ -1,7 +1,7 @@
 {
   "geo_todo_db": {
-    "host": "localhost",
-    "port": 25432,
+    "host": "db",
+    "port": 5432,
     "url": "",
     "database": "geo_todo",
     "password": "1qazXSW@1qaz",

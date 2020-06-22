@@ -9,23 +9,23 @@ services:
     image: nodejs
     restart: unless-stopped
     ports:
-      - "3000:3000"
-    networks:
-      - geo-network
+      - "3000:3000" 
     command: npm start
     depends_on:
       - db
+    networks:
+     - geo-network
 
   db:
     image: kartoza/postgis
     ports: 
-        - "25432:5432"
-    networks:
-      - geo-network
+        - "5432:5432"   
     environment:
       - POSTGRES_USER=admin
       - POSTGRES_PASS=1qazXSW@1qaz
       - POSTGRES_DBNAME=geo_todo
+    networks:
+      - geo-network
 
 networks:
   geo-network:

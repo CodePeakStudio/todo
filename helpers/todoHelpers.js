@@ -23,8 +23,6 @@ function mapFoundModel(src) {
             var parsedPosition = geometry.toGeoJSON();
         }
 
-
-
         result = {
             'id': src.id,
             'name': src.name,
@@ -42,7 +40,8 @@ function mapFoundModel(src) {
     return result;
 }
 
-function overrideCreateForGeoJsonToPostgis(ctx, unused, next) {
+function createOverride(ctx, unused, next) {
+    ctx.args.data.create = new Date();
     if (ctx.args.data.position !== undefined && ctx.args.data.position !== null) {
         var isGeoJSON = gjv.isGeoJSONObject(ctx.args.data.position);
         if (isGeoJSON) {
@@ -58,6 +57,26 @@ function overrideCreateForGeoJsonToPostgis(ctx, unused, next) {
         next();
     }
 
+}
+
+function patchOverride(ctx, unused, next) {
+    if (ctx.args.data.position !== undefined && ctx.args.data.position !== null) {
+        var isGeoJSON = gjv.isGeoJSONObject(ctx.args.data.position);
+        if (isGeoJSON) {
+            var geometry = wkx.Geometry.parseGeoJSON(ctx.req.body.position.geometry !== undefined ? ctx.req.body.position.geometry : ctx.req.body.position);
+            var wkbGeometry = geometry.toWkt();
+            ctx.args.data.position = wkbGeometry;
+            next();
+        } else {
+            next(new Error('Bad GeoJSON format.'));
+        }
+    } else if (ctx.args.data.position === undefined) {
+        delete ctx.args.data.position;
+        next();
+    } else if (ctx.args.data.position === null) {
+        ctx.args.data.position = null;
+        next();
+    }
 }
 
 function hideUnusedRemoteMethods(Model) {
@@ -91,7 +110,8 @@ module.exports = overrideDescriptionForExplorer
 
 module.exports = {
     mapFoundModel,
-    overrideCreateForGeoJsonToPostgis,
+    createOverride,
+    patchOverride,
     hideUnusedRemoteMethods,
     overrideDescriptionForExplorer
 }
