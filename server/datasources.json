@@ -1,0 +1,12 @@
+{
+  "geo_todo_db": {
+    "host": "localhost",
+    "port": 25432,
+    "url": "",
+    "database": "geo_todo",
+    "password": "1qazXSW@1qaz",
+    "name": "geo_todo_db",
+    "user": "admin",
+    "connector": "postgresql"
+  }
+}

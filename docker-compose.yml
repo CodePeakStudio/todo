@@ -1,0 +1,34 @@
+version: '3'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: geo_todo_app
+    image: nodejs
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    networks:
+      - geo-network
+    command: npm start
+    depends_on:
+      - db
+
+  db:
+    image: kartoza/postgis
+    ports: 
+        - "25432:5432"
+    networks:
+      - geo-network
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASS=1qazXSW@1qaz
+      - POSTGRES_DBNAME=geo_todo
+
+networks:
+  geo-network:
+    driver: bridge
+
+

@@ -1,0 +1,43 @@
+{
+  "name": "ToDo",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "mixins": {
+    "Timestamp": false
+  },
+  "properties": {
+  "id": {
+    "type": "number",
+    "required": false
+  },
+  "name": {
+    "type": "string",
+    "required": false
+  },
+  "position": {
+    "type": "string",
+    "default": {      
+        "type": "Point",
+        "coordinates": [125.6, 10.1]
+     },   
+    "required": false,
+    "postgresql": {
+      "columnName": "position",
+      "dataType": "geometry",
+      "nullable": "YES"
+    }
+  },
+  "isDone": {
+    "type": "boolean",
+    "required": true,
+    "default": false
+  }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": {}
+}
